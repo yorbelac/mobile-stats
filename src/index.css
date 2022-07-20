@@ -1,13 +1,77 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+@import url('https://fonts.googleapis.com/css?family=DM+Mono');
+@import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono');
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
 body {
+  font-family: Poppins,sans-serif;
+  text-align: center;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+input {
+  font-family: Poppins,sans-serif;
+  padding: 5px;
+  font-size: 1.3em;
+  border-radius: 10px;
+}
+
+table {
+  min-width:90vw;
+  font-family:'Roboto Mono';
+  font-weight: 500;
+  
+}
+
+td {
+  padding: 5px 10px 5px 10px;
+  min-width:0px;
+  text-align:right;
+  border-right: 1px solid whitesmoke;
+}
+
+
+.container {
+  padding: 20px;
+}
+
+.navbar {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  margin: auto;
+  width: 100%;
+  height: 50px;
+  line-height: 56px;
+  background-color: whitesmoke;
+  font-size: 25px;
+}
+
+.navMenu {
+  display: flex;
+  margin: auto;
+}
+
+.navItem {
+  display: inline-block;
+  width: 50px;
+  border-left: 1px solid #ccc;
+}
+
+.navItem:hover {
+  background-color: #eee;
+}
+
+.navItemActive {
+  width: 50px;
+  border-left: 1px solid #ccc;
+  background-color: #ddd;
+}
+
+.col1 {
+
+}
+
+.col2 {
+  display:block;
 }
