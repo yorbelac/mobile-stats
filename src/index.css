@@ -20,7 +20,7 @@ table {
   min-width:90vw;
   font-family:'Roboto Mono';
   font-weight: 500;
-  
+  margin: auto;
 }
 
 tr:nth-child(even) {
@@ -39,7 +39,7 @@ td {
   /* display:flex;
   width: 800px;
   justify-content: center; */
-  padding: 20px;
+  padding: 10px;
 }
 
 .navbar {

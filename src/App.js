@@ -19,6 +19,8 @@ const CUST_URL = 'https://tabsbp.herokuapp.com/api/customers'
 
 export default function App() {
 
+  const taxRate = 1.0879
+
   const [loaded, setLoaded] = useState(false)  
   const [customers, setCustomers] = useState([])
   const [tabs, setTabs] = useState([])
@@ -27,7 +29,7 @@ export default function App() {
   const [customerStats, setCustomerStats] = useState([])
 
     //NAVIGATION
-    const [nav, setNav] = useState("stats");
+    const [nav, setNav] = useState("customers");
     const go = (page) => {
       setNav(page)
     }

@@ -11,7 +11,7 @@ import { FcConferenceCall, FcComboChart } from "react-icons/fc";
 function Navbar({nav}) {
 
     // const navigate = useNavigate();
-    const [panel, setPanel] = useState("stats");
+    const [panel, setPanel] = useState("customers");
 
     const goCustomers = () => {
       setPanel('customers')

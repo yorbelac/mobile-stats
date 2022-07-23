@@ -164,16 +164,18 @@ function Stats({tabs}) {
                 type='date' 
                 id='dayLeft' 
                 placeholder='start date'
-                onChange={upDateLeft}/>            
+                onChange={upDateLeft}
+              />            
+            </div>
+            <div style={{float:'right'}}>
+              <input 
+                type='date' 
+                id='dayRight' 
+                placeholder='end date'
+                onChange={upDateRight}
+              />
+            </div>
           </div>
-          <div style={{float:'right'}}>
-            <input 
-              type='date' 
-              id='dayRight' 
-              placeholder='end date'
-              onChange={upDateRight}/>
-          </div>
-        </div>
         <div>
           <br/>
           <br/>

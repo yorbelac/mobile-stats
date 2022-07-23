@@ -1,6 +1,6 @@
 // app/Stats/ChartRevenue
 
-//dependencies3
+//dependencies
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 
