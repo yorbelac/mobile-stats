@@ -1,0 +1,8 @@
+{
+  "short_name": "Mobile Tab Stats",
+  "name": "Mobile Stats for Tabs App",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

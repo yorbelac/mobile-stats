@@ -3,7 +3,6 @@
 //dependencies
 import "./index.css";
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axios from "axios";
 
 //components
@@ -11,7 +10,7 @@ import Navbar from "./components/Navbar";
 import Stats from "./pages/Stats";
 import Menu from "./pages/Menu";
 import Customers from "./pages/Customers";
-import Loading from './components/Loading'
+import Spinner from "./components/Spinner"
 
 // CORS enabled now using URLS and fetch but here still are the placeholders to the static data.
 const TABS_URL = 'https://tabsbp.herokuapp.com/api/tabs'
@@ -20,21 +19,24 @@ const CUST_URL = 'https://tabsbp.herokuapp.com/api/customers'
 
 export default function App() {
 
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false)  
   const [customers, setCustomers] = useState([])
   const [tabs, setTabs] = useState([])
   const [menu, setMenu] = useState([])
-
   const [tabStats, setTabStats] = useState([])
+  const [customerStats, setCustomerStats] = useState([])
 
+    //NAVIGATION
+    const [nav, setNav] = useState("stats");
+    const go = (page) => {
+      setNav(page)
+    }
+
+    //HEADER CONFIGURATION (seal this shit up, stupid)
   const config = {
     headers: {
       'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ5NzQ0ZmVhNTIxYjRjMGYwYjgzZCIsImlhdCI6MTY1NzkxMzEwOCwiZXhwIjoxNjYwNTA1MTA4fQ.YHK8l-G880-dvcg-A0nGaNdsWbfwxOBFKMZcrRDrH5w'
     }
-  }
-
-  const loading = (x) => {
-    setLoaded(x)
   }
 
   async function getData() {
@@ -43,7 +45,7 @@ export default function App() {
       await axios.get(MENU_URL,config).then(res => setMenu(res.data));
       await axios.get(TABS_URL,config).then(res => setTabs(res.data));
     } catch (error) {
-      console.log('Fetching failed.')
+      console.log(error)
     }
   }  
 
@@ -58,38 +60,31 @@ export default function App() {
     //generate statsTabs
     setTabStats(tabs.filter((tab) => 
       !isNaN(tab.cost)
-      && tab.customer != ''
+      && tab.customer !== ''
     ))
 
-    if (tabStats.length === 0) {
-      setLoaded(false)
-    } else {
+    if (tabStats.length !== 0) {
       setLoaded(true)
     }
     
-  },[tabs])
+  },[tabs,tabStats.length])
 
   return (
-    <>
-    {/* <p>hello</p> */}
-      <Router>
-        <Navbar />
-        {!loaded ? 
+    <div>
+      
+      <Navbar nav={go}/>
+      <>
+        {loaded === true ? 
         <>
-          <Loading/>
+          <>{nav === 'stats' ? <Stats tabs={tabStats}/> : ''}</>
+          <>{nav === 'customers' ? <Customers customers={customers} tabs={tabStats}/> : ''}</>
+          <>{nav === 'menu' ? <Menu menu={menu} tabs={tabStats}/> : ''}</>
         </>
-        :
-        <>
-          <Routes>
-            <Route path='/' element={<Stats tabs={tabStats}/>} />
-            <Route path="/stats" element={<Stats tabs={tabStats}/>}/>
-            <Route path="/customers" element={<Customers />} />
-            <Route path="/menu" element={<Menu />} />
-          </Routes>
-        </>  
+        : 
+          <Spinner/>
         }
+      </>
 
-      </Router>
-    </>
+    </div>
   );
 }

@@ -17,7 +17,7 @@ function TableRevenue({data}) {
 
     return (
         <div>
-            <table cellspacing='0'>
+            <table cellSpacing='0'>
                 <thead>
                     <tr style={{fontWeight:500}}>
                         <td style={{textAlign:'left'}}><i>Date</i></td>
@@ -25,22 +25,24 @@ function TableRevenue({data}) {
                         <td style={{backgroundColor:'#DDA703', color:'white'}}>Credit</td>
                         <td style={{backgroundColor:'#fbbc05', color:'white'}}>Cash</td>
                         <td style={{backgroundColor:'#34a853', color:'white'}}>Tips</td>
-                        <td style={{backgroundColor:'#4285f4', color:'white'}}>TABS</td>
+                        <td style={{backgroundColor:'#4285f4', color:'white'}}>Revenue</td>
                     </tr>
                 </thead>
                 <tbody>
                     {data.map((entry) => 
-                        <tr key={entry.date} style={moment(entry.date).format('D') % 2 == 0 ? {backgroundColor:'whitesmoke'} : {}}>
+                        <tr key={entry.date}>
                             <td style={{textAlign:'left'}}><i>{entry.date}</i></td>
-                            <td>$ {entry.orders == 0 ? '' : entry.orders.toFixed(2)}</td>
-                            <td>$ {entry.payments == 0 ? '' : entry.credit.toFixed(2)}</td>
-                            <td>$ {entry.payments == 0 ? '' : entry.cash.toFixed(2)}</td>
-                            <td>$ {entry.tips == 0 ? '' : entry.tips.toFixed(2)}</td>
-                            <td>$ {entry.balance.toFixed(2)}</td>
+                            <td>{entry.orders == 0 ? '' : entry.orders.toFixed(2)}</td>
+                            <td>{entry.payments == 0 ? '' : entry.credit.toFixed(2)}</td>
+                            <td>{entry.payments == 0 ? '' : entry.cash.toFixed(2)}</td>
+                            <td>{entry.tips == 0 ? '' : entry.tips.toFixed(2)}</td>
+                            <td>{(entry.cash+entry.credit+entry.tips).toFixed(2)}</td>
                         </tr>
                     )}
                 </tbody>
             </table>
+            <br/>
+            <br/>
         </div>
     )
 

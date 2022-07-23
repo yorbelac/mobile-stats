@@ -86,8 +86,8 @@ function ChartRevenue({data}) {
 
 
   return (
-    <div>
-      <Chart type="bar" data={chartData}/>
+    <div style={{position:'relative'}}>
+      <Chart type="bar" data={chartData} height="250px"/>
     </div>
   )
 }

@@ -8,43 +8,42 @@ import { FcConferenceCall, FcComboChart } from "react-icons/fc";
 
 //components
 
-function Navbar() {
-    const navigate = useNavigate();
-    const [nav, setNav] = useState("stats");
-  
-    const stats = () => {
-      setNav("stats");
-      navigate("/stats");
-    };
-  
-    const customers = () => {
-      setNav("customers");
-      navigate("/customers");
-    };
-  
-    const menu = () => {
-      setNav("menu");
-      navigate("/menu");
-    };
+function Navbar({nav}) {
+
+    // const navigate = useNavigate();
+    const [panel, setPanel] = useState("stats");
+
+    const goCustomers = () => {
+      setPanel('customers')
+      nav('customers')
+    }
+    const goStats = () => {
+      setPanel('stats')
+      nav('stats')
+    }
+    const goMenu = () => {
+      setPanel('menu')
+      nav('menu')
+    }
   
     return (
-      <div className="navbar">
+      <div className="navbar" style={{zIndex:1}}>
         <div className='navMenu'>
         <div
-          className={`${nav === "customers" ? "navItemActive" : "navItem"}`}
-          onClick={customers}
+          className={`${panel === "customers" ? "navItemActive" : "navItem"}`}
+          onClick={goCustomers}
         >
           <FcConferenceCall />
         </div>
         <div
-          className={`${nav === "stats" ? "navItemActive" : "navItem"}`}
-          onClick={stats}
+          className={`${panel === "stats" ? "navItemActive" : "navItem"}`}
+          onClick={goStats}
         >
           <FcComboChart />
         </div>
         <div
-          className={`${nav === "menu" ? "navItemActive" : "navItem"}`}
-          onClick={menu}
+          className={`${panel === "menu" ? "navItemActive" : "navItem"}`}
+          onClick={goMenu}
           style={{ borderRight: "1px solid #ccc" }}
         >
           <MdDining />

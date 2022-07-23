@@ -110,6 +110,7 @@ function Stats({tabs}) {
   let dataR = new Array();
 
   while (day <= moment(dayRight)) {
+
     var order = orders
     .filter((tab) => tab.date === day.format('M/D/YYYY'))
     .reduce((x, y) => (x = x + y.total), 0)
@@ -133,7 +134,9 @@ function Stats({tabs}) {
     });
     balance = balance - ( cash + credit ) + order
     day = day.add(1, "days");
+
   }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //Array reversal for chart
@@ -155,25 +158,30 @@ function Stats({tabs}) {
         </div>
         <div className="col1">
           <div className='col2'>
-            <div style={{float:'left'}}><input 
-              type='date' 
-              id='dayLeft' 
-              onChange={upDateLeft}/>
-            
+            <div style={{float:'left'}}>
+              <input 
+                label='start date'
+                type='date' 
+                id='dayLeft' 
+                placeholder='start date'
+                onChange={upDateLeft}/>            
           </div>
-          <div style={{float:'right'}}><input 
-            type='date' 
-            id='dayRight' 
-            onChange={upDateRight}/>
+          <div style={{float:'right'}}>
+            <input 
+              type='date' 
+              id='dayRight' 
+              placeholder='end date'
+              onChange={upDateRight}/>
           </div>
         </div>
-        <div style={{margin:'auto'}}>
-          <ChartRevenue data={dataR}/>
+        <div>
           <br/>
+          <br/>
+          <ChartRevenue data={dataR} responsive='true'/>
           <hr style={{width:'50vw', borderTop:'1px solid lightgrey'}}/>
           <br/>
         </div> 
-        <div style={{display:'flex',justifyContent:'center', margin:'auto'}}>
+        <div style={{display:'flex',justifyContent:'center', margin:'auto', minHeight:'400px'}}>
           <TableRevenue data={data}/>
         </div>         
           
