@@ -78,9 +78,7 @@ export default function App() {
       <>
         {loaded === true ? 
         <>
-          <>{nav === 'stats' ? <Stats tabs={tabStats}/> : ''}</>
-          <>{nav === 'customers' ? <Customers customers={customers} tabs={tabStats}/> : ''}</>
-          <>{nav === 'menu' ? <Menu menu={menu} tabs={tabStats}/> : ''}</>
+          <Menu menu={menu} tabs={tabStats}/>
         </>
         : 
           <Spinner/>

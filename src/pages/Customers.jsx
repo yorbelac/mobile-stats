@@ -281,28 +281,28 @@ function Customers({customers, tabs}) {
               <ChartCustomer data={dataR} name={name} responsive='true'/>
               <br/>
               <table style={{margin:'auto'}} cellSpacing='0'>
-              <thead>
-                <tr style={{backgroundColor:'whitesmoke'}}>
-                  <td style={{textAlign:'left', fontFamily:'poppins', border:'0px'}}>TOTAL</td>
-                  <td>{profile.reduce((a,b) => a + b.count, 0)}</td>
-                  <td>{profile.reduce((a,b) => a + b.revenue, 0).toFixed(2)}</td>
-                </tr>
-                <tr style={{backgroundColor:'lightgrey'}}>
-                  <td style={{textAlign:'left', fontFamily:'poppins', border:'0px'}}><b>Name</b></td>
-                  <td><b>Qty</b></td>
-                  <td><b>Rev</b></td>
-                </tr>
-              </thead>
-              <tbody>
-                {profile.sort((a,b) => b.count - a.count).slice(0,10).map((tab) => 
-                  <tr>
-                    <td style={{textAlign:'left', fontFamily:'poppins'}}>{tab.item}</td>
-                    <td>{tab.count}</td>
-                    <td>{tab.revenue.toFixed(2)}</td>
-                  </tr>          
-                )}
-              </tbody>
-          </table>  
+                <thead>
+                  <tr style={{backgroundColor:'whitesmoke'}}>
+                    <td style={{textAlign:'left', fontFamily:'poppins', border:'0px'}}>TOTAL</td>
+                    <td>{profile.reduce((a,b) => a + b.count, 0)}</td>
+                    <td>{profile.reduce((a,b) => a + b.revenue, 0).toFixed(2)}</td>
+                  </tr>
+                  <tr style={{backgroundColor:'lightgrey'}}>
+                    <td style={{textAlign:'left', fontFamily:'poppins', border:'0px'}}><b>Name</b></td>
+                    <td><b>Qty</b></td>
+                    <td><b>Rev</b></td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {profile.sort((a,b) => b.count - a.count).slice(0,10).map((tab) => 
+                    <tr>
+                      <td style={{textAlign:'left', fontFamily:'poppins'}}>{tab.item}</td>
+                      <td>{tab.count}</td>
+                      <td>{tab.revenue.toFixed(2)}</td>
+                    </tr>          
+                  )}
+                </tbody>
+              </table>  
           </>
         }    
       </section>

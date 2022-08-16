@@ -11,7 +11,7 @@ import { FcConferenceCall, FcComboChart } from "react-icons/fc";
 function Navbar({nav}) {
 
     // const navigate = useNavigate();
-    const [panel, setPanel] = useState("customers");
+    const [panel, setPanel] = useState("menu");
 
     const goCustomers = () => {
       setPanel('customers')
@@ -29,7 +29,7 @@ function Navbar({nav}) {
     return (
       <div className="navbar" style={{zIndex:1}}>
         <div className='navMenu'>
-        <div
+        {/* <div
           className={`${panel === "customers" ? "navItemActive" : "navItem"}`}
           onClick={goCustomers}
         >
@@ -40,7 +40,7 @@ function Navbar({nav}) {
           onClick={goStats}
         >
           <FcComboChart />
-        </div>
+        </div> */}
         <div
           className={`${panel === "menu" ? "navItemActive" : "navItem"}`}
           onClick={goMenu}
