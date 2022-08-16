@@ -67,19 +67,19 @@ function ChartCustomer({data, name}) {
             ],
             stack: "Stack1"
           },
-          {
-              label: "Balance",
-              type: 'line',
-              data: data.map((entry) => entry.balance),
-              backgroundColor: [
-                  'rgba(66, 133, 244, .2)',      //blue
-              ],
-              // borderColor: 'rgba(66, 133, 244, .2)',
-              fill: {
-                  target: 'origin',
-                  // below: 'rgba(66, 133, 244, .15)'
-              }
-          },
+          // {
+          //     label: "Balance",
+          //     type: 'line',
+          //     data: data.map((entry) => entry.balance),
+          //     backgroundColor: [
+          //         'rgba(66, 133, 244, .2)',      //blue
+          //     ],
+          //     // borderColor: 'rgba(66, 133, 244, .2)',
+          //     fill: {
+          //         target: 'origin',
+          //         // below: 'rgba(66, 133, 244, .15)'
+          //     }
+          // },
       ],
     });
   }, [data]);

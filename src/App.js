@@ -37,7 +37,7 @@ export default function App() {
     //HEADER CONFIGURATION (seal this shit up, stupid)
   const config = {
     headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ5NzQ0ZmVhNTIxYjRjMGYwYjgzZCIsImlhdCI6MTY1NzkxMzEwOCwiZXhwIjoxNjYwNTA1MTA4fQ.YHK8l-G880-dvcg-A0nGaNdsWbfwxOBFKMZcrRDrH5w'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ5NzQ0ZmVhNTIxYjRjMGYwYjgzZCIsImlhdCI6MTY1ODc4NDE3NSwiZXhwIjoxNjYxMzc2MTc1fQ.618F1pgAYJkFfMyzEt_EJCOhdP_zD98SqEDyc27pZ1k'
     }
   }
 

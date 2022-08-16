@@ -1,7 +1,7 @@
 // app/Customers
 
 //dependencies
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import moment from 'moment'
 
 //components
@@ -10,6 +10,15 @@ import ChartCustomer from '../components/charts/ChartCustomer'
 function Customers({customers, tabs}) {
 
   //variables
+  const today = moment().subtract(2, 'hours').format('M/D/YYYY')
+  const todayRev = tabs.filter((tab) => 
+    moment(tab.createdAt).subtract(2,'hours').format('M/D/YYYY') === today &&
+    (tab.item === "CASH" ||
+    tab.item === "CHANGE" ||
+    tab.item === "CREDIT" ||
+    tab.item === "TIP")
+  ).reduce((a,b) => a + b.cost, 0)
+
   const uniqueNames = [...new Set(tabs.map(tab => tab.customer))] //all customer names
 
   //all customers and their balances generated here /////////////////////////////////////////////////////////
@@ -78,7 +87,7 @@ function Customers({customers, tabs}) {
     .filter(
       (tab) =>
         tab.item === "CASH" || tab.item === "CHANGE"
-    )  .map((o) => {
+    ).map((o) => {
       return {
         date: moment(o.createdAt)
           .subtract(2, "hours")
@@ -91,7 +100,7 @@ function Customers({customers, tabs}) {
   .filter(
     (tab) =>
       tab.item === "CREDIT"
-  )  .map((o) => {
+  ).map((o) => {
     return {
       date: moment(o.createdAt)
         .subtract(2, "hours")
@@ -134,8 +143,8 @@ function Customers({customers, tabs}) {
 
   //THE LOOP (X = DAYS)////AND ARRAYS////////////////////////////////////////////////////////////////////////////////////////////////////////////
   let day = moment(dayLeft).subtract(2,'hours');
-  let data = new Array();
-  let dataR = new Array();
+  let data = [];
+  let dataR = [];
 
   while (day <= moment(dayRight)) {
 
@@ -186,7 +195,12 @@ function Customers({customers, tabs}) {
   // UI //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
     <div>
+      <section name="todayRevenue" style={{backgroundColor:'whiteSmoke', padding:'10px'}}>
+        <h1 style={{marginBottom:'-20px'}}>{moment(today).format('dddd')}</h1>
+        <h3>{moment(today).format('MMMM DD, YYYY')}</h3>
+        <h2>${-todayRev.toFixed(2)}</h2>
 
+      </section>
       <section name="inHouse">
         <h2>Customers Now</h2>
         <table style={{margin:'auto'}} cellSpacing='0'>

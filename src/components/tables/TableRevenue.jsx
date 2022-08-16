@@ -31,7 +31,7 @@ function TableRevenue({data}) {
                 <tbody>
                     {data.map((entry) => 
                         <tr key={entry.date}>
-                            <td style={{textAlign:'left'}}><i>{entry.date}</i></td>
+                            <td style={{textAlign:'left'}}><i>{moment(entry.date).format("dddd")}</i></td>
                             <td>{entry.orders == 0 ? '' : entry.orders.toFixed(2)}</td>
                             <td>{entry.payments == 0 ? '' : entry.credit.toFixed(2)}</td>
                             <td>{entry.payments == 0 ? '' : entry.cash.toFixed(2)}</td>
