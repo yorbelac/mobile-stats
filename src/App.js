@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar";
 import Stats from "./pages/Stats";
 import Menu from "./pages/Menu";
 import Customers from "./pages/Customers";
+import Kitchen from "./pages/Kitchen";
 import Spinner from "./components/Spinner"
 
 // CORS enabled now using URLS and fetch but here still are the placeholders to the static data.
@@ -37,7 +38,7 @@ export default function App() {
     //HEADER CONFIGURATION (seal this shit up, stupid)
   const config = {
     headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ5NzQ0ZmVhNTIxYjRjMGYwYjgzZCIsImlhdCI6MTY1ODc4NDE3NSwiZXhwIjoxNjYxMzc2MTc1fQ.618F1pgAYJkFfMyzEt_EJCOhdP_zD98SqEDyc27pZ1k'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ5NzQ0ZmVhNTIxYjRjMGYwYjgzZCIsImlhdCI6MTY2MTM3NTI2NCwiZXhwIjo0Nzg1NTc3NjY0fQ.38ZwniP2RNeajUwutSKtDK_64yXIoZry-ZdDSzLDraY'
     }
   }
 
@@ -78,7 +79,10 @@ export default function App() {
       <>
         {loaded === true ? 
         <>
-          <Menu menu={menu} tabs={tabStats}/>
+          <>{nav === 'stats' ? <Stats tabs={tabStats}/> : ''}</>
+          <>{nav === 'customers' ? <Customers customers={customers} tabs={tabStats}/> : ''}</>
+          <>{nav === 'menu' ? <Menu menu={menu} tabs={tabStats}/> : ''}</>
+          <>{nav === 'kitchen' ? <Kitchen tabs={tabStats}/> : ''}</>
         </>
         : 
           <Spinner/>
