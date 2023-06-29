@@ -4,14 +4,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdDining } from "react-icons/md";
-import { FcConferenceCall, FcComboChart } from "react-icons/fc";
+import { FcConferenceCall, FcComboChart, FcHome } from "react-icons/fc";
 
 //components
 
 function Navbar({nav}) {
 
     // const navigate = useNavigate();
-    const [panel, setPanel] = useState("customers");
+    const [panel, setPanel] = useState("today");
 
     const goCustomers = () => {
       setPanel('customers')
@@ -25,10 +25,20 @@ function Navbar({nav}) {
       setPanel('menu')
       nav('menu')
     }
+    const goToday = () => {
+      setPanel('today')
+      nav('today')
+    }
   
     return (
       <div className="navbar" style={{zIndex:1}}>
         <div className='navMenu'>
+        <div
+          className={`${panel === "today" ? "navItemActive" : "navItem"}`}
+          onClick={goToday}
+        >
+          <FcHome />
+        </div>
         <div
           className={`${panel === "customers" ? "navItemActive" : "navItem"}`}
           onClick={goCustomers}

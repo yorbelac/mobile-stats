@@ -13,7 +13,9 @@ function Stats({tabs}) {
   //loading
   const [loading, setLoading] = useState()
 
+
   //tuned arrays///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   //ORDERS
   const orders = tabs
   .filter(
@@ -88,8 +90,11 @@ function Stats({tabs}) {
   //CHART dates///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //attempting state based dates
-    const [dayLeft, setDateLeft] = useState(new Date("July 1 2022 02:00"))
+    const [scope, setScope] = useState('day')
+
+    const [dayLeft, setDateLeft] = useState(new Date(moment().subtract(14, 'days')))
     const [dayRight, setDateRight] = useState(new Date())
+
     const upDateLeft = () => {
       setDateLeft(document.getElementById('dayLeft').value)
           }
@@ -140,7 +145,7 @@ function Stats({tabs}) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //Array reversal for chart
-  dataR = data.slice().sort((a,b) => a.date - b.date)
+  dataR = data.slice().reverse()
 
   useEffect(() => {
     if(!data.length) {
@@ -176,11 +181,20 @@ function Stats({tabs}) {
               />
             </div>
           </div>
+          <div>
+            {/* <button style={{margin: "5px", padding: "5px"}} onClick={() => setScope('previous')}>prev</button>
+            <button style={{margin: "5px", padding: "5px"}} onClick={() => setScope('hour')}>hour</button> */}
+            <button style={{margin: "5px", padding: "5px"}} onClick={() => setScope('day')}>day</button>
+            <button style={{margin: "5px", padding: "5px"}} onClick={() => setScope('week')}>week</button>
+            {/* <button style={{margin: "5px", padding: "5px"}} onClick={() => setScope('month')}>month</button>
+            <button style={{margin: "5px", padding: "5px"}} onClick={() => setScope('year')}>year</button>
+            <button style={{margin: "5px", padding: "5px"}} onClick={() => setScope('next')}>next</button> */}
+          </div>
         <div>
           <br/>
           <br/>
           <ChartRevenue data={dataR} responsive='true'/>
-          <hr style={{width:'50vw', borderTop:'1px solid lightgrey'}}/>
+          {/* <hr style={{width:'50vw', borderTop:'1px solid lightgrey'}}/> */}
           <br/>
         </div> 
         <div style={{display:'flex',justifyContent:'center', margin:'auto', minHeight:'400px'}}>

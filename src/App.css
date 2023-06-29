@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+.container {
+  margin: 0;
+  padding: 0;
+  width: 100px
+}
+
+.buttonScope {
+  border: 10px solid black;
+  margin: 5px 5px 4px 6px;
+}

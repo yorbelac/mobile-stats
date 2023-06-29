@@ -7,14 +7,7 @@ import moment from "moment";
 //chartJS stuff
 import "chart.js/auto";
 import { Chart, Bar, Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  LineController,
-  LineElement,
-  PointElement,
-  LinearScale,
-  Title
-} from "chart.js";
+import {  Chart as ChartJS,  LineController,  LineElement,  PointElement,  LinearScale,  Title} from "chart.js";
 ChartJS.register(LineController, LineElement, PointElement, LinearScale, Title);
 
 function ChartRevenue({data}) {
