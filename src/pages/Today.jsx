@@ -3,6 +3,7 @@
 //add to this the ability to scroll dates back and forth
 
 import React, { useState } from 'react'
+import { CSVLink } from 'react-csv'
 import moment from 'moment'
 
 function Today({ tabs }) {
@@ -14,8 +15,8 @@ function Today({ tabs }) {
     const today = moment().add(counter, 'days').subtract(2, 'hours').format('M/D/YYYY')
 
     //filters to tabs logged TODAY
-    const todayTabs = tabs.filter((t) => moment(t.createdAt).subtract(2, 'hours').format('M/D/YYYY') === today)
     //todayTabs//
+    const todayTabs = tabs.filter((t) => moment(t.createdAt).subtract(2, 'hours').format('M/D/YYYY') === today)
     //orders
     const todayOrders = todayTabs.filter((t) => t.item !== "CASH" && t.item !== "CREDIT" && t.item !== "CHANGE" && t.item !== "TIP").reduce((a, b) => a + b.cost, 0)
     //payments
@@ -29,13 +30,17 @@ function Today({ tabs }) {
 
     const todayReversed = todayTabs.slice().reverse()
 
+    const csvData = todayTabs.map((t) => {      
+            return {id: t._id, createdAt:moment(t.createdAt).format('M/D/Y - h:mm:ss A'), updatedAt:t.updatedAt?moment(t.updatedAt).format('M/D/Y - h:mm:ss A'):'',customer: t.customer, item: t.item, cost: t.cost, status:t.status, }        
+    })
+
     return (
         <div>
             <section name="today" style={{ backgroundColor: 'whiteSmoke', padding: '20px', borderBottom: '1px solid grey' }}>
                 <h1 style={{ marginBottom: '-20px' }}>Bites & Pipes Daily</h1>
                 <h3>{moment(today).format('dddd | MMMM DD, YYYY')}</h3>
-                <button onClick={() => setCounter(counter-1)} style={{padding:'5px', margin:'10px'}}>prev</button>
-                <button onClick={() => setCounter(counter+1)} style={{padding:'5px', margin:'10px'}}>next</button>
+                <button onClick={() => setCounter(counter - 1)} style={{ padding: '5px', margin: '10px' }}>prev</button>
+                <button onClick={() => setCounter(counter + 1)} style={{ padding: '5px', margin: '10px' }}>next</button>
 
             </section>
             <section name="today" style={{ padding: '10px', paddingBottom: "40px", borderBottom: '1px solid Black' }}>
@@ -72,7 +77,10 @@ function Today({ tabs }) {
 
             <section name='tabDisplay' style={{ padding: "0px", borderBottom: '1px solid Black' }}>
                 <h3>Day Tabs</h3>
-                <table className='borderlessTable'>
+                <CSVLink data={csvData} filename={"stats.csv"} style={{marginBottom: '10px'}}>
+                    Export to CSV
+                </CSVLink>
+                <table className='borderlessTable' style={{marginBottom: '100px'}}>
                     <thead>
                         <tr style={{ backgroundColor: '#ccc' }}>
                             <th style={{ textAlign: 'left', padding: '10px' }}>time</th>
@@ -84,7 +92,7 @@ function Today({ tabs }) {
                     <tbody>
                         {todayReversed.map((tab) =>
                             <tr key={tab._id}>
-                                <td style={{ textAlign: 'left' }}>{moment(tab.createdAt).format('h:m A')}</td>
+                                <td style={{ textAlign: 'left' }}>{moment(tab.createdAt).format('M/D/Y - h:mm A')}</td>
                                 <td style={{ textAlign: 'left' }}>{tab.customer}</td>
                                 <td style={{ textAlign: 'left' }}>{tab.item}</td>
                                 <td>{tab.cost.toFixed(2)}</td>

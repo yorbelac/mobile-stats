@@ -3,6 +3,7 @@
 //dependencies
 import { useState } from 'react'
 import moment from 'moment'
+import { CSVLink } from 'react-csv'
 
 //components
 import ChartCustomer from '../components/charts/ChartCustomer'
@@ -61,6 +62,8 @@ function Customers({ customers, tabs }) {
   //CUSTOMER TAB
   const customerTab = tabs.filter((tab) => //when name selected, filter to ordered items
     tab.customer === name)
+
+  // console.log(customerTab)
 
   //ORDERS
   const orders = customerTab
@@ -208,6 +211,10 @@ function Customers({ customers, tabs }) {
     })
   }
 
+  const csvData = customerTab.slice().reverse().map((t) => {
+    return { id: t._id, dateCreated: moment(t.createdAt).format('M/D/Y'), timeCreated: moment(t.createdAt).format('h:mm:ss A'), dateUpdated: moment(t.updatedAt).format('M/D/Y'), timeUpdated: moment(t.updatedAt).format('h:mm:ss A'), customer: t.customer, item: t.item, cost: t.cost, status: t.status, }
+  })
+
   // UI //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
     <div>
@@ -216,7 +223,7 @@ function Customers({ customers, tabs }) {
         <h3>{moment(today).format('dddd | MMMM DD, YYYY')}</h3>
 
       </section>
-      <section name="inHouse" style={{borderBottom: '1px solid black', paddingBottom: '40px'}}>
+      <section name="inHouse" style={{ borderBottom: '1px solid black', paddingBottom: '40px' }}>
         <h2>In-House Customers</h2>
         <table style={{ margin: 'auto', fontSize: "28px" }} cellSpacing='0'>
           <thead>
@@ -238,7 +245,7 @@ function Customers({ customers, tabs }) {
         </table>
       </section>
 
-      <section name="balances"  style={{borderBottom: '1px solid black', paddingBottom: '40px'}}>
+      <section name="balances" style={{ borderBottom: '1px solid black', paddingBottom: '40px' }}>
         <h2>Customer Balances</h2>
         <table style={{ margin: 'auto' }} cellSpacing='0'>
           <thead>
@@ -295,6 +302,8 @@ function Customers({ customers, tabs }) {
             <br />
             <ChartCustomer data={dataR} name={name} responsive='true' />
             <br />
+
+            <h3>Customer Preferences</h3>
             <table style={{ margin: 'auto' }} cellSpacing='0'>
               <thead>
                 <tr style={{ backgroundColor: 'whitesmoke' }}>
@@ -314,6 +323,33 @@ function Customers({ customers, tabs }) {
                     <td style={{ textAlign: 'left', fontFamily: 'poppins' }}>{tab.item}</td>
                     <td>{tab.count}</td>
                     <td>{tab.revenue.toFixed(2)}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+
+            <h3>All Customer Orders</h3>
+            <CSVLink data={csvData} filename={"stats.csv"} style={{ marginBottom: '10px' }}>
+              Export to CSV
+            </CSVLink>
+            <table style={{ margin: 'auto', marginTop: '20px' }} cellSpacing='0'>
+              <thead>
+                <tr style={{ backgroundColor: 'lightgrey' }}>
+                  <td style={{ textAlign: 'left', fontFamily: 'poppins', border: '0px' }}><b>Date</b></td>
+                  <td><b>Time</b></td>
+                  <td><b>Item</b></td>
+                  <td><b>Cost</b></td>
+                  <td><b>Status</b></td>
+                </tr>
+              </thead>
+              <tbody>
+                {customerTab.slice().reverse().map((t) =>
+                  <tr>
+                    <td>{moment(t.createdAt).format('M/D/Y')}</td>
+                    <td>{moment(t.createdAt).format('h:mm:ss A')}</td>
+                    <td>{t.item}</td>
+                    <td>{t.cost.toFixed(2)}</td>
+                    <td>{t.status}</td>
                   </tr>
                 )}
               </tbody>
