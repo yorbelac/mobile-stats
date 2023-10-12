@@ -48,16 +48,17 @@ function Navbar({nav}) {
         <div
           className={`${panel === "stats" ? "navItemActive" : "navItem"}`}
           onClick={goStats}
+          style={{ borderRight: "1px solid #ccc" }}
         >
           <FcComboChart />
         </div>
-        <div
+        {/* <div
           className={`${panel === "menu" ? "navItemActive" : "navItem"}`}
           onClick={goMenu}
           style={{ borderRight: "1px solid #ccc" }}
         >
           <MdDining />
-        </div>
+        </div> */}
         </div>
       </div>
     );

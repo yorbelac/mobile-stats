@@ -1,36 +1,24 @@
 // app/Customers
 
 //dependencies
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import moment from 'moment'
 import { CSVLink } from 'react-csv'
+import axios from 'axios'
 
 //components
 import ChartCustomer from '../components/charts/ChartCustomer'
 import customerCalc from '../features/customers/customerCalc'
 
-function Customers({ customers, tabs }) {
+function Customers({ config }) {
 
   // VARIABLES //
-
-  //defines today and formats it to common date format
+  // useEffect from down south isolates this state to OPEN tabs only, just like in the pos console.
+  // just like that, no more disconnect between the two terminals
+  const [tabs, setTabs] = useState([])
+  const [customers, setCustomers] = useState([])
+  const [currentCustomers, setCurrentCustomers] = useState([])
   const today = moment().subtract(2, 'hours').format('M/D/YYYY')
-
-  //filters to tabs logged TODAY
-  const todayTabs = tabs.filter((t) => moment(t.createdAt).subtract(2, 'hours').format('M/D/YYYY') === today)
-
-  //todayTabs//
-  //orders
-  const todayOrders = todayTabs.filter((t) => t.item !== ("CASH" && "CREDIT" && "CHANGE" && "TIP")).reduce((a, b) => a + b.cost, 0)
-  //payments
-  const todayCash = todayTabs.filter((t) => t.item === "CASH").reduce((a, b) => a + b.cost, 0)
-  const todayCredit = todayTabs.filter((t) => t.item === 'CREDIT').reduce((a, b) => a + b.cost, 0)
-  const todayChange = todayTabs.filter((t) => t.item === 'CHANGE').reduce((a, b) => a + b.cost, 0)
-  const todayTips = todayTabs.filter((t) => t.item === 'TIP').reduce((a, b) => a + b.cost, 0)
-
-  //todayRev
-  const todayRev = todayCash + todayCredit + todayChange + todayTips
-
 
   //creates an array of unique customer names
   const uniqueNames = [...new Set(tabs.map(tab => tab.customer))]
@@ -60,90 +48,69 @@ function Customers({ customers, tabs }) {
 
   //tuned arrays///////////////////////////////////////////////////////////////////////////////////////////////////
   //CUSTOMER TAB
-  const customerTab = tabs.filter((tab) => //when name selected, filter to ordered items
-    tab.customer === name)
-
-  // console.log(customerTab)
+  const customerTab = tabs.filter((tab) => tab.customer === name)
 
   //ORDERS
-  const orders = customerTab
-    .filter(
-      (tab) =>
-        tab.item !== "CASH" &&
-        tab.item !== "CHANGE" &&
-        tab.item !== "Change" &&
-        tab.item !== "CREDIT" &&
-        tab.item !== "Tip" &&
-        tab.item !== "TIP"
-    )
-    .map((o) => {
-      return {
-        date: moment(o.createdAt)
-          .subtract(2, "hours")
-          .format("M/D/YYYY"),
-        item: o.item,
-        total: o.cost
-      };
-    });
+  const orders = customerTab.filter((tab) =>
+    tab.item !== "CASH" &&
+    tab.item !== "CHANGE" &&
+    tab.item !== "Change" &&
+    tab.item !== "CREDIT" &&
+    tab.item !== "Tip" &&
+    tab.item !== "TIP"
+  ).map((o) => {
+    return {
+      date: moment(o.createdAt)
+        .subtract(2, "hours")
+        .format("M/D/YYYY"),
+      item: o.item,
+      total: o.cost
+    };
+  });
 
   //PAYMENTS
-  const payments = customerTab
-    .filter(
-      (tab) =>
-        tab.item === "CASH" || tab.item === "CHANGE" || tab.item === "CREDIT"
-    )
-    .map((o) => {
-      return {
-        date: moment(o.createdAt)
-          .subtract(2, "hours")
-          .format("M/D/YYYY"),
-        total: o.cost
-      };
-    });
+  const payments = customerTab.filter((tab) => tab.item === "CASH" || tab.item === "CHANGE" || tab.item === "CREDIT").map((o) => {
+    return {
+      date: moment(o.createdAt)
+        .subtract(2, "hours")
+        .format("M/D/YYYY"),
+      total: o.cost
+    };
+  });
 
-  const cashs = customerTab
-    .filter(
-      (tab) =>
-        tab.item === "CASH" || tab.item === "CHANGE"
-    ).map((o) => {
-      return {
-        date: moment(o.createdAt)
-          .subtract(2, "hours")
-          .format("M/D/YYYY"),
-        total: o.cost
-      };
-    });
+  const cashs = customerTab.filter((tab) => tab.item === "CASH" || tab.item === "CHANGE").map((o) => {
+    return {
+      date: moment(o.createdAt)
+        .subtract(2, "hours")
+        .format("M/D/YYYY"),
+      total: o.cost
+    };
+  });
 
-  const credits = customerTab
-    .filter(
-      (tab) =>
-        tab.item === "CREDIT"
-    ).map((o) => {
-      return {
-        date: moment(o.createdAt)
-          .subtract(2, "hours")
-          .format("M/D/YYYY"),
-        total: o.cost
-      };
-    });
+  const credits = customerTab.filter((tab) => tab.item === "CREDIT").map((o) => {
+    return {
+      date: moment(o.createdAt)
+        .subtract(2, "hours")
+        .format("M/D/YYYY"),
+      total: o.cost
+    };
+  });
 
   //TIPS
-  const tips = customerTab
-    .filter((tab) => tab.item === "TIP")
-    .map((o) => {
-      return {
-        date: moment(o.createdAt)
-          .subtract(2, "hours")
-          .format("M/D/YYYY"),
-        total: o.cost
-      };
-    });
+  const tips = customerTab.filter((tab) => tab.item === "TIP").map((o) => {
+    return {
+      date: moment(o.createdAt)
+        .subtract(2, "hours")
+        .format("M/D/YYYY"),
+      total: o.cost
+    };
+  });
 
   //CHART dates///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //attempting state based dates
-  const [dayLeft, setDateLeft] = useState(new Date("July 1 2022 02:00"))
-  const [dayRight, setDateRight] = useState(new Date())
+  const [dayLeft, setDateLeft] = useState(new Date().setHours(-336))
+  const [dayRight, setDateRight] = useState(new Date().setHours(24))
 
   const upDateLeft = () => {
     setDateLeft(document.getElementById('dayLeft').value)
@@ -152,11 +119,8 @@ function Customers({ customers, tabs }) {
     setDateRight(document.getElementById('dayRight').value)
   }
 
-  let balance = payments
-    .filter((tab) => moment(tab.date) <= moment(dayLeft).subtract(2, 'hours'))
-    .reduce((x, y) => (x = x + y.total), 0)
-    + orders
-      .filter((tab) => moment(tab.date) <= moment(dayLeft).subtract(2, 'hours'))
+  let balance = payments.filter((tab) => moment(tab.date) <= moment(dayLeft).subtract(2, 'hours'))
+    .reduce((x, y) => (x = x + y.total), 0) + orders.filter((tab) => moment(tab.date) <= moment(dayLeft).subtract(2, 'hours'))
       .reduce((x, y) => (x = x + y.total), 0)
 
   //THE LOOP (X = DAYS)////AND ARRAYS////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -187,6 +151,7 @@ function Customers({ customers, tabs }) {
       tips: tip,
       balance: balance,
     });
+
     balance = balance - (cash + credit) + order
     day = day.add(1, "days");
 
@@ -196,7 +161,6 @@ function Customers({ customers, tabs }) {
   dataR = data.slice().sort((a, b) => a.date - b.date)
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
   //unique items list for customer table
   const uniqueItems = [...new Set(orders.map((tab) => tab.item))] //all unique items selected customer has ordered
@@ -214,6 +178,39 @@ function Customers({ customers, tabs }) {
   const csvData = customerTab.slice().reverse().map((t) => {
     return { id: t._id, dateCreated: moment(t.createdAt).format('M/D/Y'), timeCreated: moment(t.createdAt).format('h:mm:ss A'), dateUpdated: moment(t.updatedAt).format('M/D/Y'), timeUpdated: moment(t.updatedAt).format('h:mm:ss A'), customer: t.customer, item: t.item, cost: t.cost, status: t.status, }
   })
+
+  const getData = async() => {
+    //tabs (open)
+    try {
+      const response = await axios.get("https://tabsbp.herokuapp.com/api/tabs/open", config)
+      console.log(response.data)
+      setTabs(response.data)
+    } catch (error) {
+      console.log('error')
+    }
+
+    //customers
+    try {
+      const response = await axios.get("https://tabsbp.herokuapp.com/api/customers", config)
+      console.log(response.data)
+      setCurrentCustomers(response.data)
+    } catch (error) {
+      console.log('error')
+    }
+  }
+
+  //summons the data for Customers Page
+  useEffect(() => {
+    getData()
+  }, [])
+
+  //watches for that the tabsData is loaded and calculates dependent arrays
+  useEffect(() => {
+    const uniqueNames = [...new Set(tabs.map(tab => tab.customer))]
+    // customers state reflects customers with a nonzero balance, as opposed to currentCustomers reflecting customers at the bar right now
+    setCustomers(uniqueNames)
+
+  },[tabs])
 
   // UI //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
@@ -233,7 +230,7 @@ function Customers({ customers, tabs }) {
             </tr>
           </thead>
           <tbody>
-            {customers.map((customer) =>
+            {currentCustomers.map((customer) =>
               <tr onClick={() => selectCustomer(customer.name)}>
                 <td style={{ textAlign: 'left', fontFamily: 'poppins', borderBottom: '1px solid lightgrey' }}>{customer.name}</td>
                 <td style={{ borderBottom: '1px solid lightgrey' }}>
@@ -262,7 +259,7 @@ function Customers({ customers, tabs }) {
           </thead>
           <tbody>
             {balances.map((tab) =>
-              <tr onClick={() => selectCustomer(tab.customer)}>
+              <tr onClick={() => selectCustomer(tab.customer)} key={tab.customer}>
                 <td style={{ textAlign: 'left', fontFamily: 'poppins' }}>{tab.customer}</td>
                 <td>{moment(tabs.filter((all) => all.customer === tab.customer).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0].createdAt).fromNow(true)}</td>
                 <td>{tab.balance.toFixed(2)}</td>
@@ -336,8 +333,8 @@ function Customers({ customers, tabs }) {
               <thead>
                 <tr style={{ backgroundColor: 'lightgrey' }}>
                   <td style={{ textAlign: 'left', fontFamily: 'poppins', border: '0px' }}><b>Date</b></td>
-                  <td><b>Time</b></td>
-                  <td><b>Item</b></td>
+                  <td style={{textAlign:"left"}}><b>Time</b></td>
+                  <td style={{textAlign:"left"}}><b>Item</b></td>
                   <td><b>Cost</b></td>
                   <td><b>Status</b></td>
                 </tr>
@@ -345,9 +342,9 @@ function Customers({ customers, tabs }) {
               <tbody>
                 {customerTab.slice().reverse().map((t) =>
                   <tr>
-                    <td>{moment(t.createdAt).format('M/D/Y')}</td>
-                    <td>{moment(t.createdAt).format('h:mm:ss A')}</td>
-                    <td>{t.item}</td>
+                    <td style={{textAlign:"left"}}>{moment(t.createdAt).format('M/D/Y')}</td>
+                    <td style={{textAlign:"left"}}>{moment(t.createdAt).format('h:mm:ss A')}</td>
+                    <td style={{textAlign:"left"}}>{t.item}</td>
                     <td>{t.cost.toFixed(2)}</td>
                     <td>{t.status}</td>
                   </tr>

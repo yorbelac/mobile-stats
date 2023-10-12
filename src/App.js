@@ -23,13 +23,13 @@ export default function App() {
 
   // const taxRate = 1.0879
 
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(true)
   const [customers, setCustomers] = useState([])
   const [tabs, setTabs] = useState([])
   const [menu, setMenu] = useState([])
+  const [nav, setNav] = useState("today");
 
   //NAVIGATION
-  const [nav, setNav] = useState("today");
   const go = (page) => {
     setNav(page)
   }
@@ -53,16 +53,14 @@ export default function App() {
 
   //useEffect for fetchData
   useEffect(() => {
-    getData()
+    // getData()
   }, [])
 
   //this useEffect watches tabs and generates arrays for the other pages.
   useEffect(() => {
-
     if (tabs.length !== 0) {
       setLoaded(true)
     }
-
   }, [tabs])
 
   return (
@@ -72,10 +70,10 @@ export default function App() {
       <>
         {loaded === true ?
           <>
-            <>{nav === 'today' ? <Today tabs={tabs} /> : ''}</>
-            <>{nav === 'stats' ? <Stats tabs={tabs} /> : ''}</>
-            <>{nav === 'customers' ? <Customers customers={customers} tabs={tabs} /> : ''}</>
-            <>{nav === 'menu' ? <Menu menu={menu} tabs={tabs} /> : ''}</>
+            <>{nav === 'today' ? <Today tabs={tabs} config={config} /> : ''}</>
+            <>{nav === 'stats' ? <Stats tabs={tabs} config={config} /> : ''}</>
+            <>{nav === 'customers' ? <Customers customers={customers} config={config}/> : ''}</>
+            <>{nav === 'menu' ? <Menu menu={menu} tabs={tabs} config={config} /> : ''}</>
           </>
           :
           <Spinner />
